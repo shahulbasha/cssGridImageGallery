@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Image Gallery using CSS Grid</title>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <div class="overlay">
+      <div class="overlay-inner">
+        <button class="close">x Close</button>
+        <img />
+      </div>
+    </div>
+
+    <section class="gallery"></section>
+
+    <script>
+      const gallery = document.querySelector(".gallery");
+      const overlay = document.querySelector(".overlay");
+      const overlayInner = overlay.querySelector(".overlay-inner");
+
+      const img = overlayInner.querySelector("img");
+      const button = overlayInner.querySelector(".close");
+
+      function generateHTML([h, v]) {
+        return `
+            <div class="item h${h} v${v}">
+                <img src="/images/${randomNumber(12)}.jpg"/>
+                <div class="item-overlay">
+                    <button >View -> </button>
+                </div>
+            </div>
+          `;
+      }
+
+      console.log(generateHTML([randomNumber(4), randomNumber(4)]));
+      function randomNumber(limit) {
+        return Math.floor(Math.random() * limit) + 1;
+      }
+
+      const digits = Array.from({ length: 50 }, () => {
+        return [randomNumber(4), randomNumber(4)];
+      });
+
+      const html = digits.map(generateHTML).join("");
+      console.log(digits);
+      gallery.innerHTML = html;
+
+      const items = document.querySelectorAll(".item");
+      items.forEach(item => {
+        item.addEventListener("click", openImage);
+      });
+
+      function openImage(e) {
+        const src = e.currentTarget.querySelector("img").src;
+        console.log(src);
+        overlay.classList.add("open");
+        img.src = src;
+        //  img.src = `/images/${randomNumber(12)}.jpg`;
+        console.log(img);
+      }
+
+      function close() {
+        overlay.classList.remove("open");
+      }
+
+      button.addEventListener("click", close);
+    </script>
+  </body>
+</html>
